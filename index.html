@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VIT Bhopal — Campus Walkthrough</title>
+<meta name="description" content="A self-guided 360° walkthrough of the VIT Bhopal University campus, Kothri Kalan, Sehore.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============ LOADER ============ -->
+<div id="loader" class="loader">
+  <div class="loader-mark">
+    <svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
+      <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="8 6"/>
+      <circle cx="32" cy="32" r="6" fill="currentColor"/>
+    </svg>
+  </div>
+  <p class="loader-text">Stitching the campus together…</p>
+  <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+</div>
+
+<!-- ============ INTRO SCREEN ============ -->
+<div id="intro" class="intro">
+  <div class="intro-grain"></div>
+  <div class="intro-inner">
+    <span class="eyebrow mono">360° SELF-GUIDED WALKTHROUGH</span>
+    <h1 class="intro-title">VIT Bhopal<br><em>on foot.</em></h1>
+    <p class="intro-sub">Seventeen vantage points across the Kothri&nbsp;Kalan campus — gates, hostels, courts and classrooms — stitched into one walk. Look around by dragging, follow the marked paths, and let the guide talk you through each stop.</p>
+    <div class="intro-meta">
+      <div class="intro-meta-item">
+        <span class="mono small">LOCATION</span>
+        <span>Kothri Kalan, Sehore, Madhya Pradesh</span>
+      </div>
+      <div class="intro-meta-item">
+        <span class="mono small">STOPS</span>
+        <span>17 panoramas</span>
+      </div>
+    </div>
+    <button class="btn-start" id="btnStart">
+      <span>Begin the walk</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <p class="intro-hint">Best with sound on — the guide narrates as you arrive at each stop.</p>
+  </div>
+</div>
+
+<!-- ============ VIEWER STAGE ============ -->
+<main id="stage" class="stage" aria-hidden="true">
+
+  <canvas id="pano" class="pano-canvas"></canvas>
+
+  <!-- hotspot layer (DOM, positioned over canvas) -->
+  <div id="hotspotLayer" class="hotspot-layer"></div>
+
+  <!-- drag hint -->
+  <div class="drag-hint" id="dragHint">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 11V7a3 3 0 0 1 6 0v4M7 11h10a1 1 0 0 1 1 1v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6"/></svg>
+    <span>Drag to look around</span>
+  </div>
+
+  <!-- top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="btnMenu" aria-label="Open scene list">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="brand mono">VIT&nbsp;BHOPAL <span class="brand-dim">/ CAMPUS WALK</span></div>
+    </div>
+    <div class="topbar-center">
+      <span class="scene-counter mono" id="sceneCounter">01 / 17</span>
+      <h2 class="scene-title" id="sceneTitle">—</h2>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" id="btnMap" aria-label="Open campus map">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l-6 2V4l6-2 6 2 6-2v16l-6 2-6-2Zm0 0V2m6 18V4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="btnAudio" aria-label="Toggle narration">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="iconAudioOn"><path d="M11 5 6 9H3v6h3l5 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="btnFullscreen" aria-label="Fullscreen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- narration caption bar -->
+  <div class="caption-bar" id="captionBar">
+    <button class="caption-toggle" id="btnCaptionPlay" aria-label="Play narration">
+      <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pauseIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+    </button>
+    <p class="caption-text" id="captionText">Welcome.</p>
+    <div class="caption-progress"><div class="caption-progress-fill" id="captionFill"></div></div>
+  </div>
+
+  <!-- bottom strip: filmstrip nav -->
+  <nav class="filmstrip" id="filmstrip" aria-label="All stops"></nav>
+
+  <!-- zoom controls -->
+  <div class="zoom-controls">
+    <button class="icon-btn small" id="btnZoomIn" aria-label="Zoom in">+</button>
+    <button class="icon-btn small" id="btnZoomOut" aria-label="Zoom out">–</button>
+  </div>
+
+</main>
+
+<!-- ============ SIDE DRAWER: ALL SCENES ============ -->
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <span class="mono small">ALL STOPS</span>
+    <button class="icon-btn" id="btnDrawerClose" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="drawer-list" id="drawerList"></div>
+</aside>
+<div id="drawerScrim" class="scrim"></div>
+
+<!-- ============ MAP OVERLAY ============ -->
+<div id="mapOverlay" class="map-overlay" aria-hidden="true">
+  <div class="map-panel">
+    <div class="map-head">
+      <span class="mono small">CAMPUS MAP — KOTHRI KALAN, SEHORE</span>
+      <button class="icon-btn" id="btnMapClose" aria-label="Close map">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="map-body">
+      <div class="map-frame-wrap">
+        <iframe id="mapFrame" title="VIT Bhopal location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=23.0756,76.8497&z=15&output=embed"
+          onerror="this.style.display='none'; document.getElementById('mapFallback').style.display='flex';"></iframe>
+        <div id="mapFallback" class="map-fallback">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-7.2-7-12a7 7 0 1 1 14 0c0 4.8-7 12-7 12Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="2.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <p class="mono small">23.0756° N, 76.8497° E</p>
+          <p class="map-fallback-text">Live map preview isn't available in this environment. Use the link below to open the location directly in Google Maps.</p>
+        </div>
+      </div>
+      <div class="map-side">
+        <p class="map-note">VIT Bhopal University sits on the Bhopal–Indore highway in Kothri Kalan, Sehore district — about 50&nbsp;km from Bhopal city. The 360° stops in this walk are arranged loosely west→east, gate to academic core.</p>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=23.0756,76.8497" target="_blank" rel="noopener">
+          Open in Google Maps
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/scenes.js"></script>
+<script src="js/viewer.js"></script>
+<script src="js/narration.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
