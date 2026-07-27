@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIT Bhopal - 360° Virtual Tour</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  
+  <style>
+    /* UI & Theme Variables */
+    :root {
+      --bg-color: rgba(255, 255, 255, 0.95);
+      --text-color: #333333;
+      --accent-color: #d32f2f;
+      --panel-border: rgba(0, 0, 0, 0.1);
+    }
+    [data-theme="dark"] {
+      --bg-color: rgba(18, 18, 18, 0.95);
+      --text-color: #ffffff;
+      --accent-color: #ff5252;
+      --panel-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body { 
+      margin: 0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      overflow: hidden;
+    }
+    
+    /* Overlay Container */
+    #ui-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; /* Clicks pass through to the 360 canvas */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    /* Header & Dark Mode Switch */
+    .header {
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: auto;
+      border-bottom: 1px solid var(--panel-border);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .header h1 { 
+      margin: 0; 
+      font-size: 1.4rem; 
+      font-weight: 600;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      background: transparent;
+      border: 2px solid var(--text-color);
+      color: var(--text-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .btn:hover { 
+      background: var(--text-color); 
+      color: var(--bg-color); 
+    }
+
+    /* Instruction Banner */
+    .instruction {
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      margin: 20px auto auto auto;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    /* College Information Panel */
+    .info-panel {
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 25px 30px;
+      pointer-events: auto;
+      max-height: 30vh;
+      overflow-y: auto;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border-top: 1px solid var(--panel-border);
+      transition: all 0.3s ease;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    }
+    .info-panel h2 { 
+      margin-top: 0; 
+      color: var(--accent-color); 
+      margin-bottom: 10px;
+    }
+    .info-panel p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Grab cursor for 360 dragging */
+    .a-canvas { cursor: grab !important; }
+    .a-canvas:active { cursor: grabbing !important; }
+  </style>
+</head>
+<body>
+
+  <!-- UI Overlay -->
+  <div id="ui-overlay">
+    <div class="header">
+      <h1>VIT Bhopal Virtual Tour</h1>
+      <div class="nav-buttons">
+        <a href="code.html" class="btn">🏠 Home</a>
+        <button class="btn" onclick="toggleTheme()">🌙 Toggle Theme</button>
+      </div>
+    </div>
+    
+    <div class="instruction">Drag to look around • Click the red buttons to move</div>
+    
+    <div class="info-panel" id="info-panel">
+      <h2 id="location-title">Loading...</h2>
+      <p id="location-desc">Please wait while the tour initializes.</p>
+    </div>
+  </div>
+
+  <!-- 360 Scene (Mouse click enabled, no fuse ring) -->
+  <a-scene loading-screen="dotsColor: red; backgroundColor: black" cursor="rayOrigin: mouse" raycaster="objects: .link">
+    <a-assets>
+      <img id="arrow" src="images/arrow.png" crossorigin="anonymous">
+    </a-assets>
+
+    <a-sky id="sky" src="" rotation="0 -90 0" 
+           animation__fade="property: material.color; type: color; startEvents: fade-out; dur: 300; from: #FFF; to: #000" 
+           animation__fadein="property: material.color; type: color; startEvents: fade-in; dur: 300; from: #000; to: #FFF">
+    </a-sky>
+
+    <!-- Camera strictly locked to center of gravity (wasd-controls removed) -->
+    <a-entity camera look-controls="reverseMouseDrag: true" position="0 0 0"></a-entity>
+
+    <!-- Container for dynamic buttons -->
+    <a-entity id="links-container"></a-entity>
+  </a-scene>
+
+  <script>
+    // --- 1. LIGHT/DARK MODE LOGIC ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // --- 2. TOUR MAP ENGINE (SLRI Logic) ---
+    const directionRotations = {
+      's': '0 0 0',
+      'l': '0 90 0',
+      'r': '0 -90 0',
+      'i': '0 180 0' 
+    };
+
+    const tourMap = {
+      // --- ROOT ---
+      "1": {
+        title: "Main Gate Entry",
+        desc: "Welcome to VIT Bhopal. The directory board showcases the expansive layout of our campus.",
+        image: "images/1 main gate entrance showcasing the directory board.jpg", 
+        links: [
+          { target: "1L", direction: "l", label: "Towards MPH" },
+          { target: "1R", direction: "r", label: "Towards Parking" }
+        ]
+      },
+
+      // --- LEFT BRANCH (Academic, MPH, Labs) ---
+      "1L": {
+        title: "Lion Statue & MPH",
+        desc: "The iconic lion statue situated in front of the Multi-Purpose Hall.",
+        image: "images/1L the lion statue in front of mph.jpg",
+        links: [
+          { target: "1", direction: "r", label: "Back to Gate" },
+          { target: "1LS", direction: "s", label: "Towards Academic Block" },
+          { target: "1Li", direction: "i", label: "Enter MPH" }
+        ]
+      },
+      "1Li": {
+        title: "Multi-Purpose Hall (MPH)",
+        desc: "Inside the MPH showcasing the indoor basketball court.",
+        image: "images/1Li Inside the Multi-Purpose Hall (MPH) showcasing the basketball court.jpg",
+        links: [ { target: "1L", direction: "i", label: "Exit MPH" } ]
+      },
+      "1LS": {
+        title: "Turn towards Academic Block 1",
+        desc: "The pathway turning towards AB1 from the MPH.",
+        image: "images/1LS The turn towards Academic Block (AB1) from MPH.jpg",
+        links: [
+          { target: "1L", direction: "i", label: "Back to MPH" },
+          { target: "1LSS", direction: "s", label: "Towards UB & AB1" }
+        ]
+      },
+      "1LSS": {
+        title: "Towards UB and AB1",
+        desc: "Approaching Under Belly and the main Academic Block.",
+        image: "images/1LSS towards ub and ab1.jpg",
+        links: [
+          { target: "1LS", direction: "i", label: "Back" },
+          { target: "1LSSS", direction: "s", label: "Mayuri's Cafe" },
+          { target: "1LSSR", direction: "r", label: "AB1 Entrance" }
+        ]
+      },
+      
+      // --- AB1 INTERIOR BRANCH ---
+      "1LSSR": {
+        title: "Academic Block 1 Entrance",
+        desc: "The front entrance of Academic Block 1.",
+        image: "images/1LSSR Academic Block 1 (AB1) Enterance.jpg",
+        links: [
+          { target: "1LSS", direction: "l", label: "Back" },
+          { target: "1LSSRi", direction: "i", label: "Enter AB1" }
+        ]
+      },
+      "1LSSRi": {
+        title: "AB1 Reception",
+        desc: "Inside Academic Block 1 showcasing the help desk and reception.",
+        image: "images/1LSSRi Inside Academic Block 1 showcasing help desk and reception.jpg",
+        links: [
+          { target: "1LSSR", direction: "i", label: "Exit Building" },
+          { target: "1LSSRiR", direction: "r", label: "Towards Back Gate" }
+        ]
+      },
+      "1LSSRiR": {
+        title: "AB1 Back Gate",
+        desc: "Academic Block 1 back gate and auditorium entrance.",
+        image: "images/1LSSRiR Academic Block 1 back gate and auditorium entrance.jpg",
+        links: [
+          { target: "1LSSRi", direction: "l", label: "Back to Reception" },
+          { target: "1LSSRiRi", direction: "i", label: "Enter Auditorium" }
+        ]
+      },
+      "1LSSRiRi": {
+        title: "The Auditorium",
+        desc: "Inside the main auditorium.",
+        image: "images/1LSSRiRi Inside the Auditorium.jpg",
+        links: [ { target: "1LSSRiR", direction: "i", label: "Exit Auditorium" } ]
+      },
+
+      // --- CAFETERIA, LABS, & ARCHITECTURE BRANCH ---
+      "1LSSS": {
+        title: "Mayuri's Cafe & UB",
+        desc: "A popular hangout spot featuring Mayuri's Cafe and Under Belly (UB) food courts.",
+        image: "images/1LSSS Mayuri's Cafe and Under Belly (UB).jpg",
+        links: [
+          { target: "1LSS", direction: "i", label: "Back" },
+          { target: "1LSSSR", direction: "r", label: "Towards Labs & Arch" }
+        ]
+      },
+      "1LSSSR": {
+        title: "Path to Architecture & Labs",
+        desc: "From Academic Block 1 towards the Architecture Block and the Lab Complex.",
+        image: "images/1LSSSR From Academic Block 1 towards the Architecture Block and the Lab Complex.jpg",
+        links: [
+          { target: "1LSSS", direction: "l", label: "Back to Cafe" },
+          { target: "1LSSSRR", direction: "r", label: "Lab Complex" },
+          { target: "1LSSSRSi", direction: "s", label: "Enter Architecture Block" } 
+        ]
+      },
+      "1LSSSRSi": {
+        title: "Architecture Block",
+        desc: "Inside of The Architecture Block.",
+        image: "images/1LSSSRSi Inside of The Architecture Block.jpg",
+        links: [ { target: "1LSSSR", direction: "i", label: "Exit Building" } ]
+      },
+      "1LSSSRR": {
+        title: "Lab Complex Exterior",
+        desc: "Outside the main Lab Complex.",
+        image: "images/1LSSSRR Lab Complex.jpg",
+        links: [
+          { target: "1LSSSR", direction: "l", label: "Back" },
+          { target: "1LSSSRRi", direction: "i", label: "Enter Lab Complex" }
+        ]
+      },
+      "1LSSSRRi": {
+        title: "Lab Complex Entrance",
+        desc: "Entrance of the Lab Complex.",
+        image: "images/1LSSSRRi Entrance of the Lab Complex.jpg",
+        links: [
+          { target: "1LSSSRR", direction: "i", label: "Exit Building" },
+          { target: "1LSSSRRiR", direction: "r", label: "Go to Centre" }
+        ]
+      },
+      "1LSSSRRiR": {
+        title: "Centre of Lab Complex",
+        desc: "The central atrium of the Lab Complex.",
+        image: "images/1LSSSRRiR Centre of the Lab Complex.jpg",
+        links: [ { target: "1LSSSRRi", direction: "l", label: "Back to Entrance" } ]
+      },
+
+      // --- RIGHT BRANCH (Parking, Hostels, OT) ---
+      "1R": {
+        title: "Towards Gate 2",
+        desc: "Towards parking, chancellor's bungalow, gate 2 and entrance.",
+        image: "images/1R towards parking chancellors bunglow gate 2 and entrance.jpg",
+        links: [
+          { target: "1", direction: "s", label: "Back to Main Gate" },
+          { target: "1RL", direction: "l", label: "Chancellor's Bungalow" },
+          { target: "1RS", direction: "r", label: "Open Theatre" }
+        ]
+      },
+      "1RS": {
+        title: "University Parking Space",
+        desc: "University's Parking Space and towards Open Theatre.",
+        image: "images/1RS University's Parking Space and towards Open Theatre.jpg",
+        links: [
+          { target: "1R", direction: "l", label: "Back" },
+          { target: "1RSi", direction: "i", label: "Enter Open Theatre" }
+        ]
+      },
+      "1RSi": {
+        title: "Open Theatre (OT)",
+        desc: "Inside the Open Theatre.",
+        image: "images/1RSi Inside the Open Theatre (OT).jpg",
+        links: [ { target: "1RS", direction: "i", label: "Exit Theatre" } ]
+      },
+      "1RL": {
+        title: "Chancellor's Bungalow Path",
+        desc: "Towards chancellor's bungalow and parking space.",
+        image: "images/1RL Towards chancellors bunglow and parking space.jpg",
+        links: [
+          { target: "1R", direction: "r", label: "Back" },
+          { target: "1RLS", direction: "s", label: "Girls Hostel 1" }
+        ]
+      },
+      "1RLS": {
+        title: "Girls Hostel Block 1",
+        desc: "Exterior of Girls Hostel Block 1.",
+        image: "images/1RLS Girls Hostel Block 1.jpg",
+        links: [
+          { target: "1RL", direction: "i", label: "Back" },
+          { target: "1RLSR", direction: "r", label: "Girls Hostel 2" }
+        ]
+      },
+      "1RLSR": {
+        title: "Girls Hostel Block 2",
+        desc: "Exterior of Girls Hostel Block 2.",
+        image: "images/1RLSR Girls Hostel Block 2.jpg",
+        links: [
+          { target: "1RLS", direction: "l", label: "Back" },
+          { target: "1RLSRR", direction: "r", label: "The Circle" }
+        ]
+      },
+      "1RLSRR": {
+        title: "The Circle",
+        desc: "The central Circle intersection.",
+        image: "images/1RLSRR The Circle.jpg",
+        links: [
+          { target: "1RLSR", direction: "l", label: "Back" },
+          { target: "1RLSRRS", direction: "s", label: "Boys Hostel 1" }
+        ]
+      },
+      "1RLSRRS": {
+        title: "Boys Hostel Block 1",
+        desc: "Exterior of Boys Hostel Block 1.",
+        image: "images/1RLSRRS Boys Hostel Block 1.jpg",
+        links: [ { target: "1RLSRR", direction: "i", label: "Back to Circle" } ]
+      }
+    };
+
+    // --- 3. SCENE RENDERING LOGIC ---
+    const sky = document.getElementById('sky');
+    const linksContainer = document.getElementById('links-container');
+    const titleEl = document.getElementById('location-title');
+    const descEl = document.getElementById('location-desc');
+
+    function loadScene(nodeId) {
+      const node = tourMap[nodeId];
+      if(!node) return;
+      
+      // Update Info Panel
+      titleEl.innerText = node.title;
+      descEl.innerText = node.desc;
+
+      // Fade out, swap image, fade in
+      sky.emit('fade-out');
+      
+      setTimeout(() => {
+        sky.setAttribute('src', node.image);
+        sky.emit('fade-in');
+        renderLinks(node.links);
+      }, 300);
+    }
+
+    function renderLinks(links) {
+      // Clear old links
+      linksContainer.innerHTML = '';
+
+      links.forEach(link => {
+        // Create the clickable button base
+        const linkEntity = document.createElement('a-entity');
+        linkEntity.setAttribute('class', 'link'); // Required for raycaster to detect clicks
+        linkEntity.setAttribute('geometry', 'primitive: circle; radius: 0.6');
+        linkEntity.setAttribute('material', 'color: #d32f2f; shader: flat; transparent: true; opacity: 0.85');
+        
+        // Position it 4 meters away based on SLRI direction
+        linkEntity.setAttribute('position', '0 0 -4');
+        
+        // Add the white arrow icon inside
+        const arrow = document.createElement('a-image');
+        arrow.setAttribute('src', '#arrow');
+        arrow.setAttribute('width', '0.6');
+        arrow.setAttribute('height', '0.6');
+        arrow.setAttribute('position', '0 0 0.01'); 
+        linkEntity.appendChild(arrow);
+
+        // Add the text label below the button
+        const label = document.createElement('a-text');
+        label.setAttribute('value', link.label);
+        label.setAttribute('align', 'center');
+        label.setAttribute('color', 'white');
+        label.setAttribute('position', '0 -0.9 0');
+        label.setAttribute('scale', '1.5 1.5 1.5');
+        linkEntity.appendChild(label);
+
+        // Wrap in a rotation entity to place it Left, Right, Straight, or Inside
+        const wrapper = document.createElement('a-entity');
+        wrapper.setAttribute('rotation', directionRotations[link.direction]);
+        wrapper.appendChild(linkEntity);
+
+        // Hover scale animation for mouse interaction
+        linkEntity.setAttribute('animation__mouseenter', 'property: scale; to: 1.1 1.1 1.1; dur: 200; startEvents: mouseenter');
+        linkEntity.setAttribute('animation__mouseleave', 'property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave');
+
+        // Add click listener
+        linkEntity.addEventListener('click', () => {
+          loadScene(link.target);
+        });
+
+        linksContainer.appendChild(wrapper);
+      });
+    }
+
+    // Initialize first scene once A-Frame is ready
+    document.querySelector('a-scene').addEventListener('loaded', function () {
+      loadScene('1');
+    });
+  </script>
+</body>
+</html>

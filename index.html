@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIT Bhopal - Campus Tour</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --card-bg: #f5f5f5;
+      --accent-color: #1e3a8a; /* VIT Blue */
+      --btn-hover: #d32f2f;    /* Red accent */
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --card-bg: #1e1e1e;
+      --accent-color: #ff5252;
+      --btn-hover: #ff7961;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Navbar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background-color: var(--card-bg);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--accent-color);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid var(--text-color);
+      color: var(--text-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--text-color);
+      color: var(--bg-color);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/1 main gate entrance showcasing the directory board.jpg') center/cover;
+      color: white;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 15px 35px;
+      font-size: 1.2rem;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--btn-hover);
+    }
+
+    /* Infrastructure Section */
+    .infrastructure {
+      padding: 60px 50px;
+      text-align: center;
+    }
+
+    .infrastructure h3 {
+      font-size: 2rem;
+      color: var(--accent-color);
+      margin-bottom: 40px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card h4 {
+      margin: 15px 0 10px 0;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--card-bg);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>VIT Bhopal University</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+  </header>
+
+  <section class="hero">
+    <h2>Experience Our Campus</h2>
+    <p>Step inside VIT Bhopal virtually. Explore our futuristic Academic Block, advanced Lab Complex, Multi-Purpose Hall, and vibrant student hostels from anywhere in the world.</p>
+    <!-- This links directly to the 360 tour file -->
+    <a href="tour.html" class="btn-primary">▶ Start 360° Virtual Tour</a>
+  </section>
+
+  <section class="infrastructure">
+    <h3>World-Class Infrastructure</h3>
+    <div class="cards">
+      <div class="card">
+        <!-- Uses one of your images -->
+        <img src="images/1LSSR Academic Block 1 (AB1) Enterance.jpg" alt="Academic Block">
+        <h4>Academic Block</h4>
+        <p>A hub of innovation featuring modern classrooms, interactive learning spaces, and the main auditorium.</p>
+      </div>
+      <div class="card">
+        <img src="images/1LSSSRR Lab Complex.jpg" alt="Lab Complex">
+        <h4>Advanced Laboratories</h4>
+        <p>State-of-the-art lab facilities equipped with the latest technology for hands-on, practical engineering learning.</p>
+      </div>
+      <div class="card">
+        <img src="images/1RLS Girls Hostel Block 1.jpg" alt="Hostels">
+        <h4>Student Hostels</h4>
+        <p>Secure, comfortable, and vibrant residential blocks designed to provide a home away from home.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 VIT Bhopal Virtual Tour Project.</p>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeBtn = document.querySelector('.theme-toggle');
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        themeBtn.innerText = '🌙 Dark Mode';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeBtn.innerText = '☀️ Light Mode';
+      }
+    }
+  </script>
+</body>
+</html>
