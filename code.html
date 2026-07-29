@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VIT Bhopal 360 | Academic Excellence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary": "#000e27",
+                "primary-fixed": "#d7e3ff",
+                "on-background": "#111c2d",
+                "on-primary-fixed": "#001b3e",
+                "primary-fixed-dim": "#adc7fb",
+                "surface": "#f9f9ff",
+                "tertiary-fixed": "#e0e3e5",
+                "inverse-surface": "#263143",
+                "inverse-primary": "#adc7fb",
+                "surface-container-lowest": "#ffffff",
+                "inverse-on-surface": "#ecf1ff",
+                "surface-container": "#e7eeff",
+                "on-secondary": "#ffffff",
+                "outline-variant": "#c4c6d0",
+                "on-primary": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "tertiary-container": "#212426",
+                "on-secondary-container": "#54647a",
+                "on-secondary-fixed": "#0b1c30",
+                "surface-bright": "#f9f9ff",
+                "on-primary-container": "#728bbc",
+                "tertiary": "#0b0f10",
+                "outline": "#747780",
+                "on-primary-fixed-variant": "#2c4773",
+                "surface-container-low": "#f0f3ff",
+                "surface-variant": "#d8e3fb",
+                "surface-container-high": "#dee8ff",
+                "secondary": "#505f76",
+                "primary-container": "#00234e",
+                "surface-dim": "#cfdaf2",
+                "on-secondary-fixed-variant": "#38485d",
+                "background": "#f9f9ff",
+                "on-error": "#ffffff",
+                "on-surface": "#111c2d",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#c4c7c9",
+                "secondary-fixed-dim": "#b7c8e1",
+                "surface-container-highest": "#d8e3fb",
+                "surface-tint": "#445f8c",
+                "error": "#ba1a1a",
+                "secondary-container": "#d0e1fb",
+                "on-tertiary-container": "#888b8d",
+                "on-tertiary-fixed-variant": "#444749",
+                "secondary-fixed": "#d3e4fe",
+                "error-container": "#ffdad6",
+                "on-tertiary-fixed": "#191c1e",
+                "on-surface-variant": "#44474f"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "md": "16px",
+                "base": "4px",
+                "xl": "32px",
+                "container-max": "1280px",
+                "gutter": "24px",
+                "xs": "4px",
+                "xxl": "64px",
+                "lg": "24px",
+                "sm": "8px"
+        },
+        "fontFamily": {
+                "title-lg": [
+                        "Montserrat"
+                ],
+                "label-sm": [
+                        "Montserrat"
+                ],
+                "body-lg": [
+                        "Montserrat"
+                ],
+                "headline-lg-mobile": [
+                        "Montserrat"
+                ],
+                "label-md": [
+                        "Montserrat"
+                ],
+                "headline-lg": [
+                        "Montserrat"
+                ],
+                "headline-md": [
+                        "Montserrat"
+                ],
+                "display-lg": [
+                        "Montserrat"
+                ],
+                "body-md": [
+                        "Montserrat"
+                ]
+        },
+        "fontSize": {
+                "title-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.04em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .professional-panel {
+            background: #ffffff;
+            border: 1px solid rgba(196, 198, 208, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .hero-mask {
+            background: linear-gradient(to bottom, rgba(0, 14, 39, 0.4) 0%, rgba(0, 14, 39, 0.8) 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-nav-line {
+            border-bottom: 2px solid #00234e;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center px-lg py-4 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">VIT Bhopal 360</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-label-md text-label-md uppercase tracking-wider text-primary active-nav-line py-1" href="#">Tour Hub</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Campus Life</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Academics</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Parents</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container/90 active:scale-95 transition-all shadow-sm">
+                    Launch 360 Tour
+                </button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida/AP1WRLtFZUq2-k4jVN5kTvoi6iV2J93hy6lUjwfh2XzKirOkjBQKyBCwb8fzIPWqj4EvfzwUsCghbg-Q4GXLckX58_WZ3J9VfZrY0QRI0yy6x6jZQflCooTVVn9RonyKAtRqx3azl1Kzb_ORaQC5BS62_-5wxpZVFxu8a5-jTUWpVnKY__qLhMBBndlKEKZuOVM6OItijx4AIfpLMUrr_uxi5WwHw_IQ8d7V8fVkKdEAmCbWZDcnAJ2dexlABLi1");'></div>
+<div class="absolute inset-0 hero-mask bg-primary/40"></div>
+<div class="relative z-10 text-center px-md md:px-lg max-w-5xl">
+<span class="font-label-sm text-label-sm text-surface-container-low uppercase tracking-[0.2em] mb-6 block" data-aos="fade-up">A Place to Learn, Live, and Grow</span>
+<h1 class="font-display-lg text-display-lg text-white mb-8 leading-tight">
+                Experience <span class="text-surface-container-low">Academic Excellence</span>
+</h1>
+<p class="font-body-lg text-body-lg text-surface-container-lowest/80 mb-12 max-w-2xl mx-auto">
+                Step into a world-class educational environment. Explore our state-of-the-art facilities, modern architecture, and serene campus through an immersive 360° virtual tour.
+            </p>
+<div class="flex flex-col md:flex-row gap-gutter justify-center items-center">
+<button class="bg-primary-container text-on-primary px-10 py-4 rounded-lg font-label-md text-label-md flex items-center gap-2 group transition-all shadow-md hover:shadow-lg">
+                    Launch 360 Tour
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="bg-surface text-primary border border-outline-variant/30 px-10 py-4 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-all">
+                    Explore Campus Map
+                </button>
+</div>
+</div>
+</section>
+<!-- Bento Features Grid -->
+<section class="py-xxl px-md md:px-lg bg-surface max-w-container-max mx-auto">
+<div class="mb-xl text-center">
+<h2 class="font-headline-lg text-headline-lg mb-4 text-primary">Academic Innovation</h2>
+<div class="w-16 h-1 bg-primary-container mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[280px]">
+<!-- LwiC Model -->
+<div class="md:col-span-8 professional-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="relative z-10 h-full flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-primary-container mb-2 uppercase tracking-wider">Applied Learning</span>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">Lab Within a Classroom (LwiC)</h3>
+<p class="text-on-surface-variant max-w-xl font-body-md text-body-md">A sophisticated academic model where theoretical instruction and practical application converge seamlessly. Every classroom is equipped as a high-performance laboratory, ensuring a direct transition from concept to execution.</p>
+</div>
+<div class="absolute -right-8 -bottom-8 w-64 h-64 opacity-5 transition-opacity">
+<span class="material-symbols-outlined text-[240px] text-primary">biotech</span>
+</div>
+</div>
+<!-- FFCS -->
+<div class="md:col-span-4 professional-panel rounded-xl p-8 relative overflow-hidden bg-surface-container-lowest">
+<span class="material-symbols-outlined text-primary-container mb-6 text-4xl">account_tree</span>
+<h3 class="font-headline-md text-title-lg mb-2 text-primary">Fully Flexible Credit System</h3>
+<p class="text-on-surface-variant font-body-md text-sm">Empowering students with academic self-sovereignty. Design your own curriculum, choose your faculty, and pace your degree according to your professional aspirations.</p>
+</div>
+<!-- CAL Studios -->
+<div class="md:col-span-4 professional-panel rounded-xl p-8 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-title-lg mb-2 text-primary">CALTech Classrooms</h3>
+<p class="text-on-surface-variant font-body-md text-sm">Experience Collaborative and Active Learning through Technology (CALTech), featuring interactive cluster-seating designed to foster cooperative intellectual effort between students and teachers.</p>
+</div>
+<div class="mt-4">
+<span class="material-symbols-outlined text-primary-container text-4xl">groups</span>
+</div>
+</div>
+<!-- Infrastructure -->
+<div class="md:col-span-8 professional-panel rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center bg-surface-container-lowest">
+<div class="flex-1">
+<span class="font-label-sm text-label-sm text-primary-container mb-2 uppercase tracking-wider">World-Class Infrastructure</span>
+<h3 class="font-headline-md text-headline-md mb-4 text-primary">State-of-the-Art Facilities</h3>
+<p class="text-on-surface-variant font-body-md text-body-md">Our campus provides a comprehensive ecosystem for advanced research, featuring specialized Gaming Studios, Aerospace Labs, IoT Labs, and Bioengineering facilities designed to help students excel in a global landscape.</p>
+</div>
+<div class="w-48 h-48 rounded-full border border-outline-variant/30 flex items-center justify-center bg-surface-container-low">
+<span class="material-symbols-outlined text-4xl text-primary-container">architecture</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Dual Journey -->
+<section class="py-xxl bg-surface-container-low relative overflow-hidden">
+<div class="max-w-container-max mx-auto px-md md:px-lg grid grid-cols-1 md:grid-cols-2 gap-16 relative">
+<!-- Student Journey -->
+<div class="space-y-8 bg-surface-container-lowest p-8 rounded-xl professional-panel">
+<div class="space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">For Students</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Your gateway to an enriching university experience. Enjoy Wi-Fi enabled hostels, the eco-friendly 'Green Building' food court, and world-class sports facilities including badminton and basketball courts.</p>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div>
+<h4 class="font-title-lg text-primary text-title-lg mb-1">Campus Highlights</h4>
+<p class="text-on-surface-variant font-body-md text-sm">Discover academic blocks, libraries, and recreational facilities through interactive virtual tours.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined">sports_basketball</span>
+</div>
+<div>
+<h4 class="font-title-lg text-primary text-title-lg mb-1">Student Life</h4>
+<p class="text-on-surface-variant font-body-md text-sm">Preview the diverse array of extracurricular activities, sports complexes, and student clubs.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Parent Journey -->
+<div class="space-y-8 bg-surface-container-lowest p-8 rounded-xl professional-panel">
+<div class="space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">For Parents</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Complete transparency and peace of mind. Review our comprehensive support systems and dedicated portals designed for you.</p>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined">computer</span>
+</div>
+<div>
+<h4 class="font-title-lg text-primary text-title-lg mb-1">V-TOP Portal</h4>
+<p class="text-on-surface-variant font-body-md text-sm">Exclusive access for parents to monitor real-time attendance, academic progress, and grade tracking.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div>
+<h4 class="font-title-lg text-primary text-title-lg mb-1">Campus Safety</h4>
+<p class="text-on-surface-variant font-body-md text-sm">Learn about our rigorous security protocols, 24/7 surveillance, and on-campus medical facilities.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Section -->
+<section class="py-xxl px-md md:px-lg bg-surface">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8 order-2 lg:order-1">
+<div class="inline-block px-4 py-1 rounded-full border border-outline-variant text-on-surface-variant font-label-sm text-label-sm uppercase">
+                    Bhopal-Indore Highway
+                </div>
+<h2 class="font-headline-lg text-headline-lg text-primary">A Focused Environment for Deep Work</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Designed on the innovative 'Linear Campus' model, our 300+ acre sanctuary features a 31,180 sq.mt. Academic Block and a 7,875 sq.mt. Pre-Engineered Laboratory Complex. From the Health Center to the multi-cuisine Green Building food court, every facility is strategically placed to foster a focused environment for deep work and student well-being.</p>
+<div class="grid grid-cols-2 gap-8 pt-8 border-t border-outline-variant/30">
+<div>
+<span class="font-title-lg text-primary block mb-1">300+ Acres</span>
+<p class="text-on-surface-variant font-body-md text-sm">Expansive Green Campus</p>
+</div>
+<div>
+<span class="font-title-lg text-primary block mb-1">Premium Facilities</span>
+<p class="text-on-surface-variant font-body-md text-sm">Modern Academic Infrastructure</p>
+</div>
+</div>
+</div>
+<div class="relative order-1 lg:order-2 professional-panel p-2 rounded-xl shadow-xl">
+<img alt="VIT Bhopal Campus Map" class="w-full h-auto rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAgHypV-GZnIalmGnJnT0j-J4pww_pV3DcCU7unlJCH2nT6WW-tbMDu8hJTvtdJUw-uZHyu4bFmGRhwAm-FsMylvwWzRM9491zQT77iT_KUBEd-YwtFy3G2x6DTGSaEkeP6BWdHI9wUYqKFzbG1A0UhEclcZQUPJnjTaNcQxoNS6PRrD_UJydFnX2Ajh5VcT_2AJs7rgvhnpEmyrG_2H0QcqcI0G0zx9vrYNuFaAm7EIVsJ3ozd8f9GhqThau6p0w0gbVqL1sqrRbf"/>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full relative bottom-0 bg-surface-container-low border-t border-outline-variant/30">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg py-xl gap-lg w-full max-w-container-max mx-auto">
+<div class="flex flex-col gap-2">
+<span class="font-title-lg text-title-lg text-primary">VIT Bhopal University</span>
+<span class="font-body-md text-body-md text-on-surface-variant">© 2024 VIT Bhopal University. All rights reserved.</span>
+</div>
+<div class="flex flex-wrap justify-center gap-gutter">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Contact Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Virtual Tour Help</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Campus Map</a>
+</div>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- FAB (Contextual for 360 Launch) -->
+<button class="fixed bottom-lg right-lg bg-primary-container text-on-primary p-4 rounded-full shadow-lg flex items-center gap-2 group z-[60] md:hidden hover:shadow-xl transition-all">
+<span class="material-symbols-outlined">explore</span>
+</button>
+<script>
+        // Simple scroll parallax effect for the hero mask
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroMask = document.querySelector('.hero-mask');
+            if (heroMask) {
+                heroMask.style.opacity = 1 - (scrolled / 800);
+            }
+        });
+    </script>
+</body></html>
